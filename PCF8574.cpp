@@ -184,8 +184,9 @@ PCF8574::PCF8574(uint8_t address, uint8_t interruptPin,  void (*interruptFunctio
 /**
  * wake up i2c controller
  */
-bool PCF8574::begin(){
+bool PCF8574::begin(bool wire_begin){
 	this->transmissionStatus = 4;
+	if(wire_begin) {
 	#if !defined(__AVR)  && !defined(ARDUINO_ARCH_SAMD) && !defined(ARDUINO_ARCH_STM32) && !defined(TEENSYDUINO)
 		DEBUG_PRINT(F("begin(sda, scl) -> "));DEBUG_PRINT(_sda);DEBUG_PRINT(F(" "));DEBUG_PRINTLN(_scl);
 //		_wire->begin(_sda, _scl);
@@ -200,7 +201,8 @@ bool PCF8574::begin(){
 	// 			#define SDA_PIN _sda
 		_wire->begin();
 	#endif
-
+	} //if(wire_begin) 
+	
 	// Check if there are pins to set low
 	if (writeMode>0 || readMode>0){
 		DEBUG_PRINTLN("Set write mode");
